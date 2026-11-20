@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff5f8">
+  <title>A little date question 💌</title>
+  <style>
+    :root { --pink:#ff4f87; --deep:#d92f68; --ink:#29212a; --soft:#fff5f8; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; color:var(--ink);
+      font-family: ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #fff 0, var(--soft) 55%, #f8e9ff 100%);
+    }
+    main { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px; }
+    .panel { width:min(680px,100%); text-align:center; }
+    .gif { display:block; width:min(260px,72vw); max-height:220px; object-fit:contain; margin:0 auto 16px; }
+    h1 { font-size:clamp(1.8rem,5vw,3rem); line-height:1.12; margin:12px 0 18px; }
+    .sub { color:#6c5a67; margin:0 auto 22px; max-width:520px; line-height:1.5; }
+    .buttons { min-height:116px; display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; position:relative; padding:12px 4px; }
+    button, input, select, textarea { font:inherit; }
+    button { border:0; border-radius:999px; cursor:pointer; transition:font-size .22s ease, transform .22s ease, padding .22s ease, box-shadow .2s ease; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid #7b4dff; outline-offset:3px; }
+    .yes { background:var(--pink); color:white; padding:13px 28px; font-weight:800; box-shadow:0 8px 22px #ff4f8740; z-index:2; white-space:nowrap; }
+    .yes:hover { background:var(--deep); }
+    .no { background:#e7e2e6; color:#4d4149; padding:12px 22px; font-weight:700; white-space:nowrap; z-index:1; }
+    .form-card { text-align:left; background:#ffffffd9; border:1px solid #f3d9e5; border-radius:24px; padding:clamp(18px,4vw,30px); box-shadow:0 18px 60px #5c234010; }
+    .form-card h2 { text-align:center; font-size:clamp(1.5rem,4vw,2rem); margin:4px 0 8px; }
+    .form-intro { text-align:center; color:#6c5a67; margin:0 0 24px; }
+    label { display:block; font-weight:750; margin:17px 0 8px; }
+    input, select, textarea { display:block; width:100%; padding:13px 14px; border:1px solid #ddcbd5; border-radius:12px; background:white; color:var(--ink); }
+    textarea { min-height:90px; resize:vertical; }
+    .submit { display:block; width:100%; margin-top:24px; background:var(--pink); color:white; font-weight:800; padding:15px 20px; }
+    .submit:disabled { opacity:.65; cursor:wait; }
+    .hint { font-size:.88rem; color:#756673; margin-top:7px; }
+    .status { text-align:center; margin-top:14px; color:#7d2447; font-weight:650; }
+    .success h1 { color:var(--deep); }
+    .hidden { display:none !important; }
+    .hearts { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:5; }
+    .heart { position:absolute; bottom:-40px; animation:floatUp 2.6s ease-in forwards; font-size:24px; }
+    @keyframes floatUp { to { transform:translateY(-115vh) rotate(25deg); opacity:0; } }
+    @media(max-width:480px) {
+      .buttons { gap:8px; min-height:128px; }
+      .no { padding:10px 15px; }
+      .yes { padding:12px 20px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="panel" id="invite">
+    <img class="gif" src="https://media1.tenor.com/m/kutFNFXxSIsAAAAd/minion-minion-loves.gif"
+         alt="Minions" onerror="this.style.display='none'">
+    <h1>Would you like to go on a date with me? 👀</h1>
+    <p class="sub">Choose wisely. The buttons may or may not be emotionally stable. 😂</p>
+    <div class="buttons" id="buttons">
+      <button class="yes" id="yesBtn" type="button">Yes, why not? ❤️</button>
+      <button class="no" id="noBtn" type="button">No</button>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="planner">
+    <div class="form-card">
+      <h2>Okayyy, I like where this is going 👀</h2>
+      <p class="form-intro">Let's sort out the details. You pick the vibe; I'll handle the rest. ❤️</p>
+      <form id="dateForm">
+        <label for="food">What are we eating? 🍽️</label>
+        <select id="food" name="food" required>
+          <option value="" selected disabled>Choose your food vibe…</option>
+          <option>Sushi</option><option>Italian</option><option>Steakhouse</option>
+          <option>Burgers</option><option>Mexican</option><option>Asian food</option>
+          <option>Something casual</option><option>Surprise me</option><option>Other (I'll explain below)</option>
+        </select>
+
+        <label for="date">So, when are we making this happen? 📅</label>
+        <input id="date" name="date" type="date" required>
+
+        <label for="time">What time works for you? ⏰</label>
+        <input id="time" name="time" type="time" required>
+
+        <label for="notes">Anything else I should know? (optional)</label>
+        <textarea id="notes" name="notes" placeholder="Food preferences, another idea, or just leave me a note…"></textarea>
+
+        <button class="submit" id="submitBtn" type="submit">Let's make it happen ❤️</button>
+        <p class="hint">Your answers will be sent to Mo so he can plan the date.</p>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel hidden success" id="finish">
+    <img class="gif" src="https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif"
+         alt="Teddy bears blowing kisses" onerror="this.style.display='none'">
+    <h1>Looks like we've got a date. 💋❤️</h1>
+    <p class="sub">I'll take care of the planning. You just have to show up. 😉</p>
+  </section>
+</main>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+<script>
+  const noPhrases = [
+    "Are you sure? 🥺",
+    "Wait, seriously? 😭",
+    "Don't do this to me 💀",
+    "I'm gonna pretend I didn't see that.",
+    "Okay, now you're just playing with me 😂",
+    "The YES button is getting stronger 📈",
+    "You've unlocked MEGA YES 💀"
+  ];
+  let noClicks = 0;
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const invite = document.getElementById("invite");
+  const planner = document.getElementById("planner");
+  const finish = document.getElementById("finish");
+  const buttons = document.getElementById("buttons");
+
+  noBtn.addEventListener("click", () => {
+    noClicks++;
+    noBtn.textContent = noPhrases[Math.min(noClicks - 1, noPhrases.length - 1)];
+    // Slide to the right and shrink, but keep the whole NO button on-screen.
+    const maxShift = Math.max(0, Math.min(170, (buttons.clientWidth / 2) - 90));
+    const shift = Math.min(maxShift, noClicks * 22);
+    const scale = Math.max(0.62, 1 - noClicks * 0.055);
+    noBtn.style.transform = `translateX(${shift}px) scale(${scale})`;
+    noBtn.style.fontSize = `${Math.max(11, 16 - noClicks * 0.5)}px`;
+    const yesFont = Math.min(72, 16 + noClicks * 8);
+    yesBtn.style.fontSize = `${yesFont}px`;
+    yesBtn.style.padding = `${Math.min(24, 12 + noClicks)}px ${Math.min(38, 22 + noClicks * 2)}px`;
+    if (noClicks >= noPhrases.length) {
+      yesBtn.textContent = "MEGA YES ❤️";
+      yesBtn.style.boxShadow = "0 0 0 8px #ff4f8720, 0 8px 30px #ff4f8760";
+    }
+  });
+
+  function burstHearts() {
+    const host = document.getElementById("hearts");
+    ["💖","💕","💘","❤️","💋","✨"].forEach((emoji, i) => {
+      for (let j = 0; j < 3; j++) {
+        const heart = document.createElement("span");
+        heart.className = "heart";
+        heart.textContent = emoji;
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDelay = `${(i * 0.07) + (j * 0.12)}s`;
+        host.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    });
+  }
+  yesBtn.addEventListener("click", () => {
+    invite.classList.add("hidden");
+    planner.classList.remove("hidden");
+    burstHearts();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // Don't allow a date in the past.
+  const dateInput = document.getElementById("date");
+  const today = new Date();
+  dateInput.min = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+
+  document.getElementById("dateForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const submitBtn = document.getElementById("submitBtn");
+    const status = document.getElementById("status");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending… ❤️";
+    status.textContent = "";
+    const payload = Object.fromEntries(new FormData(form).entries());
+    try {
+      const response = await fetch("/api/submit", {
+        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "The message could not be sent.");
+      planner.classList.add("hidden");
+      finish.classList.remove("hidden");
+      burstHearts();
+      window.scrollTo({top:0, behavior:"smooth"});
+    } catch (error) {
+      status.textContent = "I couldn't send your answers just yet. Please try again in a moment.";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Let's make it happen ❤️";
+    }
+  });
+</script>
+</body>
+</html>
